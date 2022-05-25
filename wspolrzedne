@@ -1,12 +1,15 @@
 def podaj_wiersz():
     while True:
         print("Podaj wiersz.")
-        wiersz = int(input())
-        if wiersz > 0 and wiersz < 11:
-            break
+        wiersz = input()
+        if wiersz.isdigit():
+            if int(wiersz) > 0 and int(wiersz) < 11:
+                break
+            else:
+                print("Nieprawidłowy znak. Podaj numer wiersza (1-10) jeszcze raz.")
         else:
-            print("Nieprawidłowy znak. Wprowadź numer wiersza (1-10) jeszcze raz.")
-    return wiersz - 1
+            print("Nieprawidłowy znak. Podaj numer wiersza (1-10) jeszcze raz.")
+    return int(wiersz) - 1
     
 def podaj_kolumne():
     kolumny = "ABCDEFGHIJ"
