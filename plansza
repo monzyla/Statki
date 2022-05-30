@@ -1,0 +1,21 @@
+import random
+
+
+def stworz_plansze(wiersze,kolumny):
+    plansza = []
+    for i in range(wiersze):
+        plansza.append(["O"]*kolumny)
+    return plansza
+
+def wyswietl_plansze(plansza):
+    print("   A B C D E F G H I J")
+    for i in range(len(plansza)):
+        if i+1 <10:
+            print(i+1, end='  ')
+        else:
+            print(i+1, end=' ')
+
+        for j in range(len(plansza[i])):
+            print(plansza[i][j], end = ' ')
+        print()
+    print()
