@@ -1,0 +1,16 @@
+def stworz_statek(wielkosc_planszy):
+    dlugosc = random.randint(1,5)
+    orientacja = random.choice(["pionowo", "poziomo"])
+    if orientacja == "poziomo":
+        polozenie_wiersz = random.randint(0, wielkosc_planszy-1)
+        polozenie_kolumna = random.randint(0, wielkosc_planszy-dlugosc)
+        wspolrzedne = []
+        for i in range(dlugosc):
+            wspolrzedne.append([polozenie_wiersz, polozenie_kolumna+i])
+    elif orientacja == "pionowo":
+        polozenie_wiersz = random.randint(0, wielkosc_planszy-dlugosc)
+        polozenie_kolumna = random.randint(0, wielkosc_planszy-1)
+        wspolrzedne = []
+        for i in range(dlugosc):
+            wspolrzedne.append((polozenie_wiersz+i, polozenie_kolumna))
+    return wspolrzedne
