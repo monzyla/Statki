@@ -21,7 +21,7 @@ class Gra():
     def wyswietl_plansze(self, plansza):
         print("   A B C D E F G H I J")
         for i in range(len(plansza)):
-            if i+1 <10:
+            if i < 9:
                 print(i+1, end='  ')
             else:
                 print(i+1, end=' ')
