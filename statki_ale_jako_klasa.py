@@ -22,7 +22,7 @@ class Gra():
 
     def stworz_plansze(self, plansza):
         for i in range(self.wiersze):
-            plansza.append([termcolor.colored("0", "blue"]*self.kolumny)
+            plansza.append([termcolor.colored("0", "blue")]*self.kolumny)
         return plansza
                          
     def stworz_plansze_dwa(self, plansza):
@@ -117,7 +117,7 @@ class Gra():
         for wiersz,kolumna in gdzie:
             plansza[wiersz][kolumna] = 1
 
-    def poloz_uzytkownik(wiersz,kolumna,orientacja,dlugosc):
+    def poloz_uzytkownik(self):
                             
         for statek in self.statki:
             while True:
@@ -186,6 +186,7 @@ class Gra():
 
 moja_gra = Gra()
 moja_gra.rozloz_statki_dla_komputera()
-moja_gra.wyswietl_plansze(moja_gra.plansza_ukryta)
+moja_gra.wyswietl_plansze(moja_gra.plansza_ukryta_komputer)
+moja_gra.poloz_uzytkownik()
 
 
