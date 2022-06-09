@@ -1,4 +1,7 @@
 import random
+import time
+import os
+import termcolor
 
 
 class Gra():
@@ -6,16 +9,25 @@ class Gra():
         self.wiersze = 10
         self.kolumny = 10
         self.wymiary = 10
-        self.plansza_ukryta = []
-        self.stworz_plansze(self.plansza_ukryta)
-        self.plansza_do_gry = []
-        self.stworz_plansze(self.plansza_do_gry)
+        self.plansza_ukryta_komputer = []
+        self.stworz_plansze_dwa(self.plansza_ukryta_komputer)
+        self.plansza_zgadywanie_uzytkownik = []
+        self.stworz_plansze(self.plansza_zgadywanie_uzytkownik)
+        self.plansza_ukryta_uzytkownik = []
+        self.stworz_plansze(self.plansza_ukryta_uzytkownik)
+        self.plansza_zgadywanie_komputer = []
+        self.stworz_plansze_dwa(self.plansza_zgadywanie_komputer)
         self.statki = [5,4,4,3,3,3,2,2,2,2,1,1,1,1,1]
 
 
     def stworz_plansze(self, plansza):
         for i in range(self.wiersze):
-            plansza.append([0]*self.kolumny)
+            plansza.append([termcolor.colored("0", "blue"]*self.kolumny)
+        return plansza
+                         
+    def stworz_plansze_dwa(self, plansza):
+        for i in range(self.wiersze):
+            plansza.append([termcolor.colored("0", "cyan")]*self.kolumny)
         return plansza
 
     def wyswietl_plansze(self, plansza):
@@ -35,7 +47,7 @@ class Gra():
         """Dla każdej długości statku podanego na liście wywołuje funkcje
         naloz_na_plansze_losowo"""
         jakie_statki = self.statki
-        plansza = self.plansza_ukryta
+        plansza = self.plansza_ukryta_komputer
         for statek in jakie_statki:
             self.naloz_na_plansze_losowo(statek, plansza)
 
@@ -48,7 +60,7 @@ class Gra():
         kolumna = None
 
         while da_sie_polozyc == False:
-            orientacja = random.choice(["pionowo","poziomo"])
+            orientacja = random.choice(["0","1"])
             wiersz = random.randint(0,len(plansza))
             kolumna = random.randint(0,len(plansza[0]))
             da_sie_polozyc = self.sprawdz(plansza,wiersz,kolumna,orientacja,statek)
@@ -60,7 +72,7 @@ class Gra():
         """Na podstawie orientacji statku i współrzędnych jego lewego górnego rogu
         generuje listę wszystkich współrzędnych statku o przekazanej długości"""
         wspolrzedne = []
-        if orientacja == "poziomo":
+        if orientacja == "1":
             for i in range(dlugosc):
                 wspolrzedne.append((wiersz, kolumna+i))
         else:
@@ -106,8 +118,41 @@ class Gra():
             plansza[wiersz][kolumna] = 1
 
     def poloz_uzytkownik(wiersz,kolumna,orientacja,dlugosc):
-        """Do napisania"""
-        pass
+                            
+        for statek in self.statki:
+            while True:
+                print(f"Czas położyć statek {statek}-masztowy")
+                while True:
+                    if statek == 1:
+                        print("Proszę podaj współrzędne statku.")
+                        break
+                    else:
+                        print("Proszę wpisz orientację: 0 [pionowo], 1 [poziomo]")
+                        orientacja = input()
+                        if orientacja == "0" or orientacja == "1":
+                            if orientacja == "0":
+                                print("Proszę podaj współrzędne górnej części statku.")
+                            elif orientacja == "1":
+                                print("Proszę podaj współrzędne lewego brzegu statku.")
+                            break
+                wiersz = self.podaj_wiersz()
+                kolumna = self.podaj_kolumne()
+                plansza = self.plansza_ukryta_uzytkownik
+                czy_mozna_postawic = self.sprawdz(plansza,wiersz,kolumna,orientacja,statek)
+                if not czy_mozna_postawic:
+                    print("Ups! Tam nie można postawić statku")
+                    time.sleep(1)
+                    os.system("cls")
+                    self.wyswietl_plansze(self.plansza_ukryta_uzytkownik)
+                else:
+                    self.poloz_statek(plansza,wiersz,kolumna,orientacja,statek)
+                    os.system("cls")
+                    self.wyswietl_plansze(self.plansza_ukryta_uzytkownik)
+                    break
+        time.sleep(0.5)
+        os.system("cls")
+        print("Koniec ustawiania statków! Czas zacząć grę")
+
 
     def podaj_wiersz(self):
         while True:
