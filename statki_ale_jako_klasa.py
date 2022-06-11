@@ -18,6 +18,8 @@ class Gra():
         self.plansza_zgadywanie_komputer = []
         self.stworz_plansze_dwa(self.plansza_zgadywanie_komputer)
         self.statki = [5,4,4,3,3,3,2,2,2,2,1,1,1,1,1]
+        self.wykorzystane = []
+        self.cele = []
 
 
     def stworz_plansze(self, plansza):
@@ -199,4 +201,60 @@ class Gra():
                 return True
             else:
                 return False
+            
+    def zgadywanie_uzytkownik(self):
+        self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
+        wiersz = self.podaj_wiersz()
+        kolumna = self.podaj_kolumne()
+        self.zmiany_na_planszy(self.plansza_zgadywanie_uzytkownik,self.plansza_ukryta_komputer,wiersz,kolumna)
+        self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
+        if self.czy_trafione_pole(self.plansza_ukryta_komputer,wiersz,kolumna):
+            self.zgadywanie_uzytkownik()
 
+    def losowanie_wiersza(self):
+        wiersz = random.randint(0,9)
+        return wiersz
+
+    def losowanie_kolumny(self):
+        kolumna = random.randint(0,9)
+        return kolumna
+
+    def pobieranie_pola(self):
+        wiersz = self.losowanie_wiersza()
+        kolumna = self.losowanie_kolumny()
+        pole = (wiersz,kolumna)
+        return wiersz,kolumna,pole
+
+    def zgadywanie_komputer(self): 
+        while True:
+            time.sleep(1)
+            os.system("cls")
+            self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
+            if not self.cele:
+                wiersz,kolumna,pole = self.pobieranie_pola()
+            else:
+                pole = random.choice(self.cele)
+                wiersz = pole[0]
+                kolumna = pole[1]
+                self.cele.remove(pole)
+            if pole in self.wykorzystane:
+                continue
+            else:
+                self.wykorzystane.append(pole)
+                self.zmiany_na_planszy(self.plansza_zgadywanie_komputer,self.plansza_ukryta_uzytkownik,wiersz,kolumna)
+                time.sleep(0.5)
+                os.system("cls")
+                self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
+                if self.czy_trafione_pole(self.plansza_ukryta_uzytkownik,wiersz,kolumna):
+                    potencjalne_cele = (wiersz+1,kolumna),(wiersz-1,kolumna),(wiersz,kolumna+1),(wiersz,kolumna-1)
+                    for cel in potencjalne_cele:
+                        self.cele.append(cel)
+                    self.zgadywanie_komputer()
+                break
+                
+moja_gra = Gra()
+moja_gra.rozloz_statki_dla_komputera()
+moja_gra.poloz_uzytkownik()
+for i in range(20):
+    moja_gra.zgadywanie_uzytkownik()
+    moja_gra.zgadywanie_komputer()
