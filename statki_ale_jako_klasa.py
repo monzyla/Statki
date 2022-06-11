@@ -1,9 +1,9 @@
 import random
 import time
-import os
 import termcolor
 
 
+import os
 class Gra():
     def __init__(self):
         self.wiersze = 10
