@@ -188,5 +188,20 @@ moja_gra = Gra()
 moja_gra.rozloz_statki_dla_komputera()
 moja_gra.wyswietl_plansze(moja_gra.plansza_ukryta_komputer)
 moja_gra.poloz_uzytkownik()
+def zmiany_na_planszy(self, plansza_ukryta, plansza_jawna, wiersz, kolumna):
+        """W zależności od współrzędnych podanych przez użytkownika
+        zaznacza na wyświetlanej planszy "X", jeśli użytkownik trafił, a "-",
+        jeśli mu się nie udało"""
+        if plansza_ukryta[wiersz][kolumna] == 1:
+            plansza_jawna[wiersz][kolumna] = termcolor.colored("X", "green")
+            return True
+        else:
+            plansza_jawna[wiersz][kolumna] = termcolor.colored("-", "red")
+            return False
 
+    def czy_trafione_pole(self,plansza_ukryta,wiersz,kolumna):
+        if plansza_ukryta[wiersz][kolumna] == 1:
+            return True
+        else:
+            return False
 
