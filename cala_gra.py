@@ -316,36 +316,36 @@ class Gra():
                 break
                 print("Pudło!")
                                       
-        def czy_zatopiony(self,plansza,wiersz,kolumna,trafione):
+    def czy_zatopiony(self,plansza,wiersz,kolumna,trafione):
         """Zwraca True, jeśli pole, którego współrzędne zostały przekazane należy do zatopionego statku"""
-            i=1
-            while not self.wystaje(wiersz+i,kolumna):
-                if plansza[wiersz+i][kolumna] == 1 and (wiersz+i,kolumna) not in trafione:
-                    return False
-                if plansza[wiersz+i][kolumna]!=1:
-                    break
-                i += 1
-            i=1
-            while not self.wystaje(wiersz-i,kolumna):
-                if plansza[wiersz-i][kolumna] == 1 and (wiersz-i,kolumna) not in trafione:
-                    return False
-                if plansza[wiersz-i][kolumna]!=1:
-                    break
-                i += 1
-            i=1
-            while not self.wystaje(wiersz,kolumna+i):
-                if plansza[wiersz][kolumna+i] == 1 and (wiersz,kolumna+i) not in trafione:
-                    return False
-                if plansza[wiersz][kolumna+i]!=1:
-                    break
-                i += 1
-            i=1
-            while not self.wystaje(wiersz,kolumna-i):
-                if plansza[wiersz][kolumna-i] == 1 and (wiersz,kolumna-i) not in trafione:
-                    return False
-                if plansza[wiersz][kolumna-i]!=1:
-                    break
-                i += 1
-            return True
+        i=1
+        while not self.wystaje(wiersz+i,kolumna):
+            if plansza[wiersz+i][kolumna] == 1 and (wiersz+i,kolumna) not in trafione:
+                return False
+            if plansza[wiersz+i][kolumna]!=1:
+                break
+            i += 1
+        i=1
+        while not self.wystaje(wiersz-i,kolumna):
+            if plansza[wiersz-i][kolumna] == 1 and (wiersz-i,kolumna) not in trafione:
+                return False
+            if plansza[wiersz-i][kolumna]!=1:
+                break
+            i += 1
+        i=1
+        while not self.wystaje(wiersz,kolumna+i):
+            if plansza[wiersz][kolumna+i] == 1 and (wiersz,kolumna+i) not in trafione:
+                return False
+            if plansza[wiersz][kolumna+i]!=1:
+                break
+            i += 1
+        i=1
+        while not self.wystaje(wiersz,kolumna-i):
+            if plansza[wiersz][kolumna-i] == 1 and (wiersz,kolumna-i) not in trafione:
+                return False
+            if plansza[wiersz][kolumna-i]!=1:
+                break
+            i += 1
+        return True
 
 
