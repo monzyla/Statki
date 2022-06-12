@@ -284,10 +284,10 @@ class Gra():
                 wiersz = pole[0]
                 kolumna = pole[1]
                 self.cele.remove(pole)
-            if pole in self.wykorzystane:
+            if pole in self.wykorzystane_komputer:
                 continue
             else:
-                self.wykorzystane.append(pole)
+                self.wykorzystane_komputer.append(pole)
                 time.sleep(1.5)
                 os.system("cls")
                 self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
