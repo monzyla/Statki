@@ -9,18 +9,25 @@ class Gra():
         self.wiersze = 10
         self.kolumny = 10
         self.wymiary = 10
-        self.plansza_ukryta_komputer = []
+        # tablica na porozstawiane statki komputera
+        self.plansza_ukryta_komputer = [] 
         self.stworz_plansze_dwa(self.plansza_ukryta_komputer)
+        # tablica umożliwiająca wyświetlanie zmian po zgadywaniu użytkownika
         self.plansza_zgadywanie_uzytkownik = []
         self.stworz_plansze(self.plansza_zgadywanie_uzytkownik)
+        # tablica na porozstawiane statki użytkownika
         self.plansza_ukryta_uzytkownik = []
         self.stworz_plansze(self.plansza_ukryta_uzytkownik)
+        # tablica umożliwiająca wyświetlanie zmian po zgadywaniu komputera
         self.plansza_zgadywanie_komputer = []
         self.stworz_plansze_dwa(self.plansza_zgadywanie_komputer)
         self.statki = [5,4,4,3,3,3,2,2,2,2,1,1,1,1,1]
+        # pola, w które już zostały oddane strzały
         self.wykorzystane_komputer = [] 
         self.wykorzystane_uzytkownik = []
+        # pola targetowane przez komputer po dobrym trafieniu
         self.cele = []
+        # pola statków, w które jeszcze nie było trafienia 
         self.statki_komputer = [] 
         self.statki_uzytkownik = []
 
@@ -64,10 +71,10 @@ class Gra():
         kolumna = None
         tablica = self.statki_komputer
 
-        while da_sie_polozyc == False:
+        while not da_sie_polozyc:
             orientacja = random.choice(["0","1"])
-            wiersz = random.randint(0,len(plansza))
-            kolumna = random.randint(0,len(plansza[0]))
+            wiersz = random.randint(0,self.wiersze)
+            kolumna = random.randint(0,self.kolumny)
             da_sie_polozyc = self.sprawdz(plansza,wiersz,kolumna,orientacja,statek)
 
         self.poloz_statek(plansza,tablica,wiersz,kolumna,orientacja,statek)
@@ -85,20 +92,21 @@ class Gra():
                 wspolrzedne.append((wiersz+i, kolumna))
         return wspolrzedne
 
-    def wystaje(self,plansza,wiersz,kolumna):
+    def wystaje(self,wiersz,kolumna):
         """Zwraca True, jeśli (wiersz,kolumna) jest poza planszą"""
-        return wiersz<0 or kolumna<0 or wiersz>= len(plansza) or kolumna>=len(plansza[0])
+        return wiersz<0 or kolumna<0 or wiersz>=self.wiersze or kolumna>=self.kolumny
 
     def zly_sasiad(self,plansza,wiersz,kolumna):
-        """Zwraca True, jeśli pole nie nadaje się nie sąsiada statku"""
-        if not self.wystaje(plansza,wiersz,kolumna):
+        """Zwraca True, jeśli pole nie nadaje się nie sąsiada statku,
+        ponieważ znajduje się na nim inny statek"""
+        if not self.wystaje(wiersz,kolumna):
             return plansza[wiersz][kolumna] == 1
-        else:
-            return False
+        return False
 
     def sprawdz(self,plansza,wiersz,kolumna,orientacja,statek):
-        """Zwraca True, kiedy żadna ze współrzędnych statku nie znajduje się
-        poza planszą oraz kiedy sąsiadem nie jest pole zajęte przez inny statek"""
+        """Zwraca True, kiedy pole nie jest zajęte, a żadna ze współrzędnych statku
+        nie znajduje się poza planszą oraz kiedy sąsiadem nie jest pole zajęte przez 
+        inny statek"""
         wspolrzedne_statku = self.generuj(wiersz,kolumna,orientacja,statek)
         for wiersz_s, kolumna_s in wspolrzedne_statku:
             if self.wystaje(plansza, wiersz_s, kolumna_s):
@@ -124,7 +132,10 @@ class Gra():
             tablica.append((wiersz,kolumna))
 
     def poloz_uzytkownik(self):
-                            
+        """Umożliwia użytkownikowi postawienie statków na ukrytej planszy.
+        Wykorzystuje pobrane od uzytkownika informacje o orientacji i współrzędnej 
+        lewego górnego rogu. Wykorzystuje metodę self.czy_mozna_postawic do sprawdzenia, 
+        czy w wybranym miejscu są puste pola i następnie wywołuje self.postaw statek"""                    
         for statek in self.statki:
             while True:
                 print(f"Czas położyć statek {statek}-masztowy")
@@ -161,6 +172,8 @@ class Gra():
 
 
     def podaj_wiersz(self):
+        """Pobiera od użytkownika numer wiersza od 1 do 10 
+        i zwraca numer wiersza odpowiadający mu w tablicy"""
         while True:
             print("Podaj wiersz.")
             wiersz = input()
@@ -174,6 +187,8 @@ class Gra():
         return int(wiersz) - 1
 
     def podaj_kolumne(self):
+        """Pobiera od użytkownika oznaczenie kolumny i przekształca 
+        literę na odpowiadający numer w tablicy"""
         kolumny = "ABCDEFGHIJabcdefghij"
         litery_na_cyfry = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7, "I":8, "J":9}
         while True:
@@ -200,35 +215,44 @@ class Gra():
                 plansza_jawna[wiersz][kolumna] = termcolor.colored("-", "red")
                 return False
 
-        def czy_trafione_pole(self,plansza_ukryta,wiersz,kolumna):
-            if plansza_ukryta[wiersz][kolumna] == 1:
-                return True
-            else:
-                return False
+    def czy_trafione_pole(self,plansza_ukryta,wiersz,kolumna):
+        """Zwraca True, jeśli przekazane pole zostało trafione"""
+        if plansza_ukryta[wiersz][kolumna] == 1:
+            return True
+        else:
+            return False
             
     def zgadywanie_uzytkownik(self):
+        """Przekazuje podane przez użytkownika numer wiersza i kolumny do 
+        zmiany_na_planszy i wyświetla plansze po strzale. Umożliwia kolejny strzał
+        po poprawnym trafieniu. Informuje jeśli statek został zatopiony"""
+        os.system("cls")
         self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
+        self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
         wiersz = self.podaj_wiersz()
         kolumna = self.podaj_kolumne()
         pole = (wiersz,kolumna)
         if not pole in self.wykorzystane_uzytkownik:
             self.wykorzystane_uzytkownik.append(pole)
+            self.zmiany_na_planszy(self.plansza_ukryta_komputer,self.plansza_zgadywanie_uzytkownik,wiersz,kolumna)
             time.sleep(1)
             os.system("cls")
-            self.zmiany_na_planszy(self.plansza_ukryta_komputer,self.plansza_zgadywanie_uzytkownik,wiersz,kolumna)
             self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
             self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
             if self.czy_trafione_pole(self.plansza_ukryta_komputer,wiersz,kolumna):
-                print("Trafiony!")
+                if self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
+                    print("Trafiony! Zatopiony!")
+                else:
+                    print("Trafiony!)
                 time.sleep(1)
                 self.statki_komputer.remove((wiersz,kolumna))
                 self.zgadywanie_uzytkownik()
             else:
                 print("Pudło!")
-                time.sleep(0.5)
+                time.sleep(1)
         else:
             print("Już tam trafiałeś!")
-            time.sleep(0.5)
+            time.sleep(1)
             os.system("cls")
             self.zgadywanie_uzytkownik()
 
@@ -247,6 +271,10 @@ class Gra():
         return wiersz,kolumna,pole
 
     def zgadywanie_komputer(self): 
+        """Losuje numer wiersza i kolumny i przekazuje je do zmiany_na_planszy.
+        Umożliwia ponowne losowanie wiersza i kolumny po poprawnym trafieniu.
+        Jeśli komputer trafił to dodaje pola graniczące z tym polem do listy celów,
+        z której potem losuje."""
         while True:
             if not self.cele:
                 wiersz,kolumna,pole = self.pobieranie_pola()
@@ -274,7 +302,10 @@ class Gra():
                 self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
                 self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
                 if self.czy_trafione_pole(self.plansza_ukryta_uzytkownik,wiersz,kolumna):
-                    print("Trafiony!")
+                    if self.czy_zatopiony(self.plansza_ukryta_uzytkownik,wiersz,kolumna,self.wykorzystane_komputer):
+                        print("Trafiony! Zatopiony!")   
+                    else:
+                        print("Trafiony!")
                     self.statki_uzytkownik.remove(pole)
                     potencjalne_cele = (wiersz+1,kolumna),(wiersz-1,kolumna),(wiersz,kolumna+1),(wiersz,kolumna-1)
                     for cel in potencjalne_cele:
@@ -284,10 +315,37 @@ class Gra():
                 time.sleep(0.5)
                 break
                 print("Pudło!")
-                
-moja_gra = Gra()
-moja_gra.rozloz_statki_dla_komputera()
-moja_gra.poloz_uzytkownik()
-for i in range(20):
-    moja_gra.zgadywanie_uzytkownik()
-    moja_gra.zgadywanie_komputer()
+                                      
+        def czy_zatopiony(self,plansza,wiersz,kolumna,trafione):
+        """Zwraca True, jeśli pole, którego współrzędne zostały przekazane należy do zatopionego statku"""
+            i=1
+            while not self.wystaje(wiersz+i,kolumna):
+                if plansza[wiersz+i][kolumna] == 1 and (wiersz+i,kolumna) not in trafione:
+                    return False
+                if plansza[wiersz+i][kolumna]!=1:
+                    break
+                i += 1
+            i=1
+            while not self.wystaje(wiersz-i,kolumna):
+                if plansza[wiersz-i][kolumna] == 1 and (wiersz-i,kolumna) not in trafione:
+                    return False
+                if plansza[wiersz-i][kolumna]!=1:
+                    break
+                i += 1
+            i=1
+            while not self.wystaje(wiersz,kolumna+i):
+                if plansza[wiersz][kolumna+i] == 1 and (wiersz,kolumna+i) not in trafione:
+                    return False
+                if plansza[wiersz][kolumna+i]!=1:
+                    break
+                i += 1
+            i=1
+            while not self.wystaje(wiersz,kolumna-i):
+                if plansza[wiersz][kolumna-i] == 1 and (wiersz,kolumna-i) not in trafione:
+                    return False
+                if plansza[wiersz][kolumna-i]!=1:
+                    break
+                i += 1
+            return True
+
+
