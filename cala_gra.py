@@ -109,7 +109,7 @@ class Gra():
         inny statek"""
         wspolrzedne_statku = self.generuj(wiersz,kolumna,orientacja,statek)
         for wiersz_s, kolumna_s in wspolrzedne_statku:
-            if self.wystaje(plansza, wiersz_s, kolumna_s):
+            if self.wystaje(wiersz_s, kolumna_s):
                 return False
             else:
                 if plansza[wiersz_s][kolumna_s]==1:
@@ -155,6 +155,7 @@ class Gra():
                 wiersz = self.podaj_wiersz()
                 kolumna = self.podaj_kolumne()
                 plansza = self.plansza_ukryta_uzytkownik
+                tablica = self.statki_uzytkownik
                 czy_mozna_postawic = self.sprawdz(plansza,wiersz,kolumna,orientacja,statek)
                 if not czy_mozna_postawic:
                     print("Ups! Tam nie można postawić statku")
@@ -162,7 +163,7 @@ class Gra():
                     os.system("cls")
                     self.wyswietl_plansze(self.plansza_ukryta_uzytkownik)
                 else:
-                    self.poloz_statek(plansza,wiersz,kolumna,orientacja,statek)
+                    self.poloz_statek(plansza,tablica,wiersz,kolumna,orientacja,statek)
                     os.system("cls")
                     self.wyswietl_plansze(self.plansza_ukryta_uzytkownik)
                     break
@@ -243,7 +244,7 @@ class Gra():
                 if self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
                     print("Trafiony! Zatopiony!")
                 else:
-                    print("Trafiony!)
+                    print("Trafiony!")
                 time.sleep(1)
                 self.statki_komputer.remove((wiersz,kolumna))
                 self.zgadywanie_uzytkownik()
@@ -290,7 +291,7 @@ class Gra():
                 time.sleep(1.5)
                 os.system("cls")
                 self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
-                self.wyswietl_plansze(self.plansza_zgadywanie_komputer
+                self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
                 print("Komputer zgaduje!")
                 time.sleep(0.65)
                 cyfry_na_litery = {0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", 9:"J"}
