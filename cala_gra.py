@@ -211,10 +211,8 @@ class Gra():
             jeśli mu się nie udało"""
             if plansza_ukryta[wiersz][kolumna] == 1:
                 plansza_jawna[wiersz][kolumna] = termcolor.colored("X", "green")
-                return True
             else:
                 plansza_jawna[wiersz][kolumna] = termcolor.colored("-", "red")
-                return False
 
     def czy_trafione_pole(self,plansza_ukryta,wiersz,kolumna):
         """Zwraca True, jeśli przekazane pole zostało trafione"""
@@ -241,13 +239,16 @@ class Gra():
             self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
             self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
             if self.czy_trafione_pole(self.plansza_ukryta_komputer,wiersz,kolumna):
-                if self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
-                    print("Trafiony! Zatopiony!")
-                else:
-                    print("Trafiony!")
-                time.sleep(1)
                 self.statki_komputer.remove((wiersz,kolumna))
+            if not self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
+                print("Trafiony!")
+                time.sleep(1)
                 self.zgadywanie_uzytkownik()
+            else:
+                print("Trafiony! Zatopiony!")
+                time.sleep(1)
+                if self.statki_komputer:
+                    self.zgadywanie_uzytkownik()
             else:
                 print("Pudło!")
                 time.sleep(1)
@@ -303,20 +304,23 @@ class Gra():
                 self.wyswietl_plansze(self.plansza_zgadywanie_uzytkownik)
                 self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
                 if self.czy_trafione_pole(self.plansza_ukryta_uzytkownik,wiersz,kolumna):
+                    self.statki_uzytkownik.remove(pole)
                     if self.czy_zatopiony(self.plansza_ukryta_uzytkownik,wiersz,kolumna,self.wykorzystane_komputer):
-                        print("Trafiony! Zatopiony!")   
+                        print("Trafiony! Zatopiony!")
+                        if not self.statki_uzytkownik:
+                            break
                     else:
                         print("Trafiony!")
-                    self.statki_uzytkownik.remove(pole)
                     potencjalne_cele = (wiersz+1,kolumna),(wiersz-1,kolumna),(wiersz,kolumna+1),(wiersz,kolumna-1)
                     for cel in potencjalne_cele:
                         if not self.wystaje(cel[0],cel[1]):
                             self.cele.append(cel)
                     self.zgadywanie_komputer()
-                time.sleep(0.5)
-                break
-                print("Pudło!")
-                                      
+                else:
+                    print("Pudło!")
+            time.sleep(0.6)
+            break 
+            
     def czy_zatopiony(self,plansza,wiersz,kolumna,trafione):
         """Zwraca True, jeśli pole, którego współrzędne zostały przekazane należy do zatopionego statku"""
         i=1
