@@ -240,15 +240,15 @@ class Gra():
             self.wyswietl_plansze(self.plansza_zgadywanie_komputer)
             if self.czy_trafione_pole(self.plansza_ukryta_komputer,wiersz,kolumna):
                 self.statki_komputer.remove((wiersz,kolumna))
-            if not self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
-                print("Trafiony!")
-                time.sleep(1)
-                self.zgadywanie_uzytkownik()
-            else:
-                print("Trafiony! Zatopiony!")
-                time.sleep(1)
-                if self.statki_komputer:
+                if not self.czy_zatopiony(self.plansza_ukryta_komputer,wiersz,kolumna,self.wykorzystane_uzytkownik):
+                    print("Trafiony!")
+                    time.sleep(1)
                     self.zgadywanie_uzytkownik()
+                else:
+                    print("Trafiony! Zatopiony!")
+                    time.sleep(1)
+                    if self.statki_komputer:
+                        self.zgadywanie_uzytkownik()
             else:
                 print("Pudło!")
                 time.sleep(1)
