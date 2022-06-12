@@ -348,4 +348,45 @@ class Gra():
             i += 1
         return True
 
+print(termcolor.colored("WITAJ W GRZE W STATKI", "magenta"))
+print("Statki rozmieszczane są na samym początku gry na planszy o wymiarach 10x10."
+"\nNastępnie, użytkownik oraz komputer naprzemiennie zgadują pola, na których "
+"potencjalnie mógłby się znajdować statek \nprzeciwnika.")
+print("Gdy strzał jest niepoprawny, zgadywanie rozpoczyna przeciwnik."
+"\nW przypadku trafienia w statek przeciwnika osobie zgadującej przysługuje "
+"kolejny strzał. \nGra kończy się, gdy któraś ze stron zatopi wszystkie statki przeciwnika.")
+print(termcolor.colored("Aby rozpocząć naciśnij enter.", "green"))
+dzialanie = input()
+if dzialanie == "enter":
+    moja_gra = Gra()
+os.system("cls")
+moja_gra = Gra()
+print("Plansza, na której będa pojawiać się wszystkie strzały użytkownika:")
+moja_gra.wyswietl_plansze(moja_gra.plansza_zgadywanie_uzytkownik)
+print("Plansza ukazująca wszystkie strzały komputera:")
+moja_gra.wyswietl_plansze(moja_gra.plansza_zgadywanie_komputer)
+print("Aby przejść dalej naciśnij enter")
+if input() == "enter":
+    print("Proszę, rozmieść swoje statki na planszy")
+os.system("cls")
+moja_gra.rozloz_statki_dla_komputera()
+print("Proszę, rozmieść swoje statki na planszy")
+moja_gra.wyswietl_plansze(moja_gra.plansza_ukryta_uzytkownik)
+moja_gra.poloz_uzytkownik()
+print("INSTRUKCJA:")
+print("Czerwony", termcolor.colored("-", "red"), "oznacza strzał nietrafiony")
+print("Zielony", termcolor.colored("X", "green"), "oznacza strzał trafiony")
+print("Aby przejść dalej naciśnij enter")
+if input() == "enter":
+    os.system("cls")
+while moja_gra.statki_komputer and moja_gra.statki_uzytkownik:
+    moja_gra.zgadywanie_komputer()
+    moja_gra.zgadywanie_uzytkownik()
+if moja_gra.statki_uzytkownik:
+    print("Udało Ci się wygrać!")
+else:
+    print("Niestety przegrałeś z komputerem!")
+print("Aby zakończyć naciśnij enter")
+if input() == "enter":
+    os.system("quit")
 
