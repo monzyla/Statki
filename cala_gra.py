@@ -384,9 +384,15 @@ print("Zielony", termcolor.colored("X", "green"), "oznacza strzał trafiony")
 print("Aby przejść dalej naciśnij enter")
 if input() == "enter":
     os.system("cls")
-while moja_gra.statki_komputer and moja_gra.statki_uzytkownik:
+    
+while True:
     moja_gra.zgadywanie_komputer()
+    if not moja_gra.statki_komputer or not moja_gra.statki_uzytkownik:
+        break
     moja_gra.zgadywanie_uzytkownik()
+    if not moja_gra.statki_komputer or not moja_gra.statki_uzytkownik:
+        break
+       
 if moja_gra.statki_uzytkownik:
     print("Udało Ci się wygrać!")
 else:
