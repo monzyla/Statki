@@ -176,7 +176,7 @@ class Gra():
         """Pobiera od użytkownika numer wiersza od 1 do 10 
         i zwraca numer wiersza odpowiadający mu w tablicy"""
         while True:
-            print("Podaj wiersz.")
+            print("Podaj wiersz (1-10).")
             wiersz = input()
             if wiersz.isdigit():
                 if int(wiersz) > 0 and int(wiersz) < 11:
@@ -193,7 +193,7 @@ class Gra():
         kolumny = "ABCDEFGHIJabcdefghij"
         litery_na_cyfry = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7, "I":8, "J":9}
         while True:
-            print("Podaj kolumnę.")
+            print("Podaj kolumnę (A-J).")
             kolumna_lit = input()
             if kolumna_lit.isalnum():
                 if kolumna_lit in kolumny:
